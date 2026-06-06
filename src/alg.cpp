@@ -1,6 +1,6 @@
 // Copyright 2021 NNTU-CS
 #include "alg.h"
- 
+
 int countPairs1(int *arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len - 1; i++) {
@@ -12,7 +12,7 @@ int countPairs1(int *arr, int len, int value) {
   }
   return count;
 }
- 
+
 int countPairs2(int *arr, int len, int value) {
   int count = 0;
   int i = 0, j = len - 1;
@@ -44,7 +44,7 @@ int countPairs2(int *arr, int len, int value) {
   }
   return count;
 }
- 
+
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
   for (int i = 0; i < len - 1; i++) {
