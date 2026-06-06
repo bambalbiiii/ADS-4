@@ -50,22 +50,22 @@ int countPairs3(int *arr, int len, int value) {
   int count = 0;
   int i = 0;
   while (i < len) {
-    int target = value - arr[i];
-    if (target < arr[i]) break;
-    int* lo = std::lower_bound(arr + i + 1, arr + len, target);
-    int* hi = std::upper_bound(arr + i + 1, arr + len, target);
-    int found = static_cast<int>(hi - lo);
-    if (found > 0) {
-      if (arr[i] == target) {
-        int n = found + 1;
-        count += n * (n - 1) / 2;
-        i += n;
-        continue;
-      }
-      count += found;
+    int a = arr[i];
+    int target = value - a;
+    if (target < a) break;
+    int iEnd = static_cast<int>(
+      std::upper_bound(arr + i, arr + len, a) - arr);
+    int aCnt = iEnd - i;
+    if (a == target) {
+      count += aCnt * (aCnt - 1) / 2;
+    } else {
+      int lo = static_cast<int>(
+        std::lower_bound(arr + iEnd, arr + len, target) - arr);
+      int hi = static_cast<int>(
+        std::upper_bound(arr + iEnd, arr + len, target) - arr);
+      count += aCnt * (hi - lo);
     }
-    int* next = std::upper_bound(arr + i, arr + len, arr[i]);
-    i = static_cast<int>(next - arr);
+    i = iEnd;
   }
   return count;
 }
