@@ -1,4 +1,5 @@
 // Copyright 2021 NNTU-CS
+#include <algorithm>
 #include "alg.h"
 
 int countPairs1(int *arr, int len, int value) {
@@ -47,34 +48,24 @@ int countPairs2(int *arr, int len, int value) {
 
 int countPairs3(int *arr, int len, int value) {
   int count = 0;
-  for (int i = 0; i < len - 1; i++) {
+  int i = 0;
+  while (i < len) {
     int target = value - arr[i];
     if (target < arr[i]) break;
-    int low = i + 1, high = len - 1;
-    while (low <= high) {
-      int mid = low + (high - low) / 2;
-      if (arr[mid] == target) {
-        int left = mid, right = mid;
-        while (left > i + 1 && arr[left - 1] == target) {
-          left--;
-        }
-        while (right < high && arr[right + 1] == target) {
-          right++;
-        }
-        if (arr[i] == target) {
-          int n = right - i + 1;
-          count += n * (n - 1) / 2;
-          i = right;
-        } else {
-          count += right - left + 1;
-        }
-        break;
-      } else if (arr[mid] < target) {
-        low = mid + 1;
-      } else {
-        high = mid - 1;
+    int* lo = std::lower_bound(arr + i + 1, arr + len, target);
+    int* hi = std::upper_bound(arr + i + 1, arr + len, target);
+    int found = static_cast<int>(hi - lo);
+    if (found > 0) {
+      if (arr[i] == target) {
+        int n = found + 1;
+        count += n * (n - 1) / 2;
+        i += n;
+        continue;
       }
+      count += found;
     }
+    int* next = std::upper_bound(arr + i, arr + len, arr[i]);
+    i = static_cast<int>(next - arr);
   }
   return count;
 }
